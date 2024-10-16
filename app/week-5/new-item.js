@@ -1,86 +1,126 @@
 "use client";
 import { useState } from "react";
 
-export default function NewItem() {
+export default function Item() {
     const [name, setName] = useState(""); // For item name
-    const [quantity, setQuantity] = useState(1); 
+    const [quantity, setQuantity] = useState(1); // Quantity for counter buttons
     const [category, setCategory] = useState("produce"); // Default category
 
+    // Handle form submission
     const handleSubmit = (event) => {
-        event.preventDefault(); 
+        event.preventDefault();
 
-        // Create an object with the current form values
-        const newItem = {
+        const Item = {
             name: name,
-            quantity: quantity,
+            quantity: quantity, // Use the counter quantity here
             category: category
         };
 
-        // Display the form data in an alert
-        alert(`Item: ${newItem.name}\nQuantity: ${newItem.quantity}\nCategory: ${newItem.category}`);
+        alert(`Item: ${Item.name}\nQuantity: ${Item.quantity}\nCategory: ${Item.category}`);
 
-        // Reset the form fields
+        // Reset form fields
         setName("");  // Reset to initial value
-        setQuantity(1);  // Reset to default
+        setQuantity(1);  // Reset counter
         setCategory("produce");  // Reset to default
     };
 
-    return (
-        <form onSubmit={handleSubmit} className="p-5 bg-green-100">
-            {/* Item Name Field */}
-            <div className="mb-3">
-                <label className="inline-block w-40">Item Name:</label>
+    // Define functions to handle incrementing/decrementing the counter
+    const incrementQuantity = () => {
+        if (quantity < 99) setQuantity(quantity + 1);
+    };
+
+    const decrementQuantity = () => {
+        if (quantity > 1) setQuantity(quantity - 1);
+    };
+
+    // AdvCounter component integrated directly into this code
+    function AdvCounter({ currentCount, incrementCounterFunction, decrementCounterFunction }) {
+        let btn1Disabled = currentCount <= 1;
+        let btn2Disabled = currentCount >= 99;
+
+        return (
+            <div className="flex items-center">
+
+
                 <input
                     type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)} // Update state on input change
-                    required // Make it required
-                    className="px-2 py-0.5 rounded bg-blue-100 focus:bg-green-200 border border-teal-600"
+                    readOnly
+                    value={currentCount}
+                    className="w-12 text-center bg-gray-200 rounded"
                 />
-            </div>
 
-            {/* Quantity Field */}
-            <div className="mb-3">
-                <label className="inline-block w-40">Quantity:</label>
-                <input
-                    type="number"
-                    value={quantity}
-                    onChange={(e) => setQuantity(e.target.value)} 
-                    min="1" 
-                    max="99"
-                    required
-                    className="px-2 py-0.5 rounded bg-blue-100 focus:bg-green-200 border border-teal-600"
-                />
-            </div>
 
-            {/* Category Field */}
-            <div className="mb-3">
-                <label className="inline-block w-40">Category:</label>
-                <select
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)} // Update category on change
-                    className="px-2 py-0.5 rounded bg-blue-100 focus:bg-green-200 border border-teal-600"
+                <button
+                    className="bg-blue-500 text-white rounded px-4 py-2 mx-1 hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-200"
+                    onClick={decrementCounterFunction}
+                    disabled={btn1Disabled}
                 >
-                    <option value="produce">Produce</option>
-                    <option value="dairy">Dairy</option>
-                    <option value="bakery">Bakery</option>
-                    <option value="meat">Meat</option>
-                    <option value="frozen foods">Frozen Foods</option>
-                    <option value="canned goods">Canned Goods</option>
-                    <option value="dry goods">Dry Goods</option>
-                    <option value="beverages">Beverages</option>
-                    <option value="snacks">Snacks</option>
-                    <option value="household">Household</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
+                    -
+                </button>
 
-            {/* Submit Button */}
-            <div className="mb-3">
-                <button className="w-96 px-3 py-2 rounded text-white bg-blue-600 hover:bg-blue-800 active:bg-blue-400">
+                <button
+                    className="bg-blue-500 text-white rounded px-4 py-2 mx-1 hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-200"
+                    onClick={incrementCounterFunction}
+                    disabled={btn2Disabled}
+                >
                     +
                 </button>
             </div>
-        </form>
+        );
+    }
+
+    return (
+        <div className="flex items-center justify-center min-h-screen bg-gray-900">
+            <form onSubmit={handleSubmit} className="p-6 bg-gray-800 rounded-lg shadow-lg">
+                {/* Item Name Field */}
+                <div className="mb-4">
+                    <input
+                        type="text"
+                        placeholder="Item name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                        className="w-full px-4 py-2 text-black rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+
+                {/* Quantity Field with integrated AdvCounter */}
+                <div className="mb-4">
+                    <AdvCounter
+                        currentCount={quantity}
+                        incrementCounterFunction={incrementQuantity}
+                        decrementCounterFunction={decrementQuantity}
+                    />
+                </div>
+
+                {/* Category Field */}
+                <div className="mb-4">
+                    <select
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                        className="w-full px-4 py-2 text-black rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        <option value="produce">Produce</option>
+                        <option value="dairy">Dairy</option>
+                        <option value="bakery">Bakery</option>
+                        <option value="meat">Meat</option>
+                        <option value="frozen foods">Frozen Foods</option>
+                        <option value="canned goods">Canned Goods</option>
+                        <option value="dry goods">Dry Goods</option>
+                        <option value="beverages">Beverages</option>
+                        <option value="snacks">Snacks</option>
+                        <option value="household">Household</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                {/* Submit Button */}
+                <div>
+                    <button className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 active:bg-blue-800">
+                        +
+                    </button>
+                </div>
+            </form>
+        </div>
     );
 }
