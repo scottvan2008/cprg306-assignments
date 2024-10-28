@@ -10,13 +10,11 @@ export default function AdvCounterPage() {
     const incrementCounter = () => {
         if(count < 20)
         setCount(count + 1);
-    
     }
 
     const decrementCounter = () => {
         if(count > 1)
         setCount(count - 1);
-    
     }
 
     return(
