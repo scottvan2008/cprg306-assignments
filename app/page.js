@@ -1,5 +1,4 @@
 import Link from "next/link";
-import StudentInfo from "./week-2/student-info";
 
 export default function Home() {
     return (
@@ -14,6 +13,7 @@ export default function Home() {
                 <li><Link href="./week-5">Week 5 Assignment</Link></li>
                 <li><Link href="./week-6">Week 6 Assignment</Link></li>
                 <li><Link href="./week-7">Week 7 Assignment</Link></li>
+                <li><Link href="./week-8">Week 8 Assignment</Link></li>
             </ul>
         </main>
     );
